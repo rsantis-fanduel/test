@@ -1,0 +1,4 @@
+apply from: 'https://deploy.east.fdbox.net/library.gradle'
+
+dependencies {
+}

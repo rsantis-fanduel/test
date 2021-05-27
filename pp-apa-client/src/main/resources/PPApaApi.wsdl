@@ -1,0 +1,366 @@
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:security="http://www.betfair.com/security/" name="PartnerAPI"
+                  targetNamespace="http://www.betfair.com/serviceapi/v1.0/PartnerAPI/"
+                  xmlns:tns="http://www.betfair.com/servicetypes/v1/PartnerAPI/"
+                  xmlns:wns="http://www.betfair.com/serviceapi/v1.0/PartnerAPI/">
+  <wsdl:documentation>PartnerAPI.wsdl v1.0</wsdl:documentation>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.betfair.com/security/" elementFormDefault="qualified">
+      <xsd:element name="Credentials">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:any minOccurs="0"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+    <xsd:schema targetNamespace="http://www.betfair.com/servicetypes/v1/PartnerAPI/"
+                elementFormDefault="qualified">
+      <xsd:annotation>
+        <xsd:documentation>PartnerAPI.wsdl v1.0</xsd:documentation>
+      </xsd:annotation>
+      <xsd:element name="RetrieveUserSessionDetailsRequest"
+                   type="tns:RetrieveUserSessionDetailsRequestType"/>
+      <xsd:complexType name="RetrieveUserSessionDetailsRequestType">
+        <xsd:all>
+          <xsd:element name="token" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="userIP" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:element name="RetrieveUserSessionDetailsResponse"
+                   type="tns:RetrieveUserSessionDetailsResponseType"/>
+      <xsd:complexType name="RetrieveUserSessionDetailsResponseType">
+        <xsd:all>
+          <xsd:element name="response" type="tns:UserSessionDetailsResponseType" minOccurs="1"
+                       maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:element name="RetrieveBalanceRequest" type="tns:RetrieveBalanceRequestType"/>
+      <xsd:complexType name="RetrieveBalanceRequestType">
+        <xsd:all>
+          <xsd:element name="accountId" type="xsd:long" minOccurs="1" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:element name="RetrieveBalanceResponse" type="tns:RetrieveBalanceResponseType"/>
+      <xsd:complexType name="RetrieveBalanceResponseType">
+        <xsd:all>
+          <xsd:element name="response" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:element name="RetrieveBalanceInfoRequest" type="tns:RetrieveBalanceInfoRequestType"/>
+      <xsd:complexType name="RetrieveBalanceInfoRequestType">
+        <xsd:all>
+          <xsd:element name="accountId" type="xsd:long" minOccurs="1" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:element name="RetrieveBalanceInfoResponse" type="tns:RetrieveBalanceInfoResponseType"/>
+      <xsd:complexType name="RetrieveBalanceInfoResponseType">
+        <xsd:all>
+          <xsd:element name="response" type="tns:RetrieveBalanceInfoType" minOccurs="1"
+                       maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:element name="TransferRequest" type="tns:TransferRequestType"/>
+      <xsd:complexType name="TransferRequestType">
+        <xsd:all>
+          <xsd:element name="transferRef" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="token" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="accountId" type="xsd:long" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="amount" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="currency" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="transferDesc" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:element name="TransferResponse" type="tns:TransferResponseType"/>
+      <xsd:complexType name="TransferResponseType">
+        <xsd:all>
+          <xsd:element name="response" type="tns:ComplexTransferResponseType" minOccurs="1"
+                       maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:element name="SendNotificationsRequest" type="tns:SendNotificationsRequestType"/>
+      <xsd:complexType name="SendNotificationsRequestType">
+        <xsd:all>
+          <xsd:element name="accountId" type="xsd:long" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="applicationKey" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="notificationInfo" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:element name="SendNotificationsResponse" type="tns:SendNotificationsResponseType"/>
+      <xsd:complexType name="SendNotificationsResponseType">
+        <xsd:all>
+          <xsd:element name="response" type="xsd:boolean" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:element name="KeepAliveRequest" type="tns:KeepAliveRequestType"/>
+      <xsd:complexType name="KeepAliveRequestType">
+        <xsd:all>
+          <xsd:element name="token" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:element name="KeepAliveResponse" type="tns:KeepAliveResponseType"/>
+      <xsd:complexType name="KeepAliveResponseType">
+        <xsd:all>
+          <xsd:element name="response" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:element name="CancelTransferRequest" type="tns:CancelTransferRequestType"/>
+      <xsd:complexType name="CancelTransferRequestType">
+        <xsd:all>
+          <xsd:element name="transferRef" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="cancelTransferRef" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:element name="CancelTransferResponse" type="tns:CancelTransferResponseType"/>
+      <xsd:complexType name="CancelTransferResponseType">
+        <xsd:all>
+          <xsd:element name="response" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="UserSessionDetailsResponseType">
+        <xsd:all>
+          <xsd:element name="profile" type="tns:ProfileType" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="balance" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="token" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="jurisdiction" type="tns:JurisdictionType" minOccurs="1" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ProfileType">
+        <xsd:all>
+          <xsd:element name="accountId" type="xsd:long" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="initials" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="overrideIpBan" type="xsd:boolean" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="currency" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="countryCode" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="firstName" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="nickname" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+          <xsd:element name="securityStatus" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="JurisdictionType">
+        <xsd:all>
+          <xsd:element name="name" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="jurisdictionData" type="tns:JurisdictionDataType" minOccurs="0"
+                       maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="JurisdictionDataType">
+        <xsd:all>
+          <xsd:element name="nationalIdentifier" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="ComplexTransferResponseType">
+        <xsd:all>
+          <xsd:element name="transferId" type="xsd:long" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="token" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="RetrieveBalanceInfoType">
+        <xsd:all>
+          <xsd:element name="main" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="bonus" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+          <xsd:element name="total" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:element name="PartnerAPIException" type="tns:PartnerAPIExceptionType"/>
+      <xsd:complexType name="PartnerAPIExceptionType">
+        <xsd:all>
+          <xsd:element name="errorCode" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:all>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="HeadersInOut">
+    <wsdl:part name="credentials" element="security:Credentials"/>
+  </wsdl:message>
+  <wsdl:message name="RetrieveUserSessionDetailsIn">
+    <wsdl:part name="parameters" element="tns:RetrieveUserSessionDetailsRequest"/>
+  </wsdl:message>
+  <wsdl:message name="RetrieveUserSessionDetailsOut">
+    <wsdl:part name="parameters" element="tns:RetrieveUserSessionDetailsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="RetrieveBalanceIn">
+    <wsdl:part name="parameters" element="tns:RetrieveBalanceRequest"/>
+  </wsdl:message>
+  <wsdl:message name="RetrieveBalanceOut">
+    <wsdl:part name="parameters" element="tns:RetrieveBalanceResponse"/>
+  </wsdl:message>
+  <wsdl:message name="RetrieveBalanceInfoIn">
+    <wsdl:part name="parameters" element="tns:RetrieveBalanceInfoRequest"/>
+  </wsdl:message>
+  <wsdl:message name="RetrieveBalanceInfoOut">
+    <wsdl:part name="parameters" element="tns:RetrieveBalanceInfoResponse"/>
+  </wsdl:message>
+  <wsdl:message name="TransferIn">
+    <wsdl:part name="parameters" element="tns:TransferRequest"/>
+  </wsdl:message>
+  <wsdl:message name="TransferOut">
+    <wsdl:part name="parameters" element="tns:TransferResponse"/>
+  </wsdl:message>
+  <wsdl:message name="SendNotificationsIn">
+    <wsdl:part name="parameters" element="tns:SendNotificationsRequest"/>
+  </wsdl:message>
+  <wsdl:message name="SendNotificationsOut">
+    <wsdl:part name="parameters" element="tns:SendNotificationsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="KeepAliveIn">
+    <wsdl:part name="parameters" element="tns:KeepAliveRequest"/>
+  </wsdl:message>
+  <wsdl:message name="KeepAliveOut">
+    <wsdl:part name="parameters" element="tns:KeepAliveResponse"/>
+  </wsdl:message>
+  <wsdl:message name="CancelTransferIn">
+    <wsdl:part name="parameters" element="tns:CancelTransferRequest"/>
+  </wsdl:message>
+  <wsdl:message name="CancelTransferOut">
+    <wsdl:part name="parameters" element="tns:CancelTransferResponse"/>
+  </wsdl:message>
+  <wsdl:message name="PartnerAPIExceptionFault">
+    <wsdl:part name="fault" element="tns:PartnerAPIException"/>
+  </wsdl:message>
+  <wsdl:portType name="PartnerAPIService">
+    <wsdl:operation name="retrieveUserSessionDetails">
+      <wsdl:input message="wns:RetrieveUserSessionDetailsIn"/>
+      <wsdl:output message="wns:RetrieveUserSessionDetailsOut"/>
+      <wsdl:fault name="partnerAPIException" message="wns:PartnerAPIExceptionFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveBalance">
+      <wsdl:input message="wns:RetrieveBalanceIn"/>
+      <wsdl:output message="wns:RetrieveBalanceOut"/>
+      <wsdl:fault name="partnerAPIException" message="wns:PartnerAPIExceptionFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveBalanceInfo">
+      <wsdl:input message="wns:RetrieveBalanceInfoIn"/>
+      <wsdl:output message="wns:RetrieveBalanceInfoOut"/>
+      <wsdl:fault name="partnerAPIException" message="wns:PartnerAPIExceptionFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="transfer">
+      <wsdl:input message="wns:TransferIn"/>
+      <wsdl:output message="wns:TransferOut"/>
+      <wsdl:fault name="partnerAPIException" message="wns:PartnerAPIExceptionFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="sendNotifications">
+      <wsdl:input message="wns:SendNotificationsIn"/>
+      <wsdl:output message="wns:SendNotificationsOut"/>
+      <wsdl:fault name="partnerAPIException" message="wns:PartnerAPIExceptionFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="keepAlive">
+      <wsdl:input message="wns:KeepAliveIn"/>
+      <wsdl:output message="wns:KeepAliveOut"/>
+      <wsdl:fault name="partnerAPIException" message="wns:PartnerAPIExceptionFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="cancelTransfer">
+      <wsdl:input message="wns:CancelTransferIn"/>
+      <wsdl:output message="wns:CancelTransferOut"/>
+      <wsdl:fault name="partnerAPIException" message="wns:PartnerAPIExceptionFault"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PartnerAPIService" type="wns:PartnerAPIService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="retrieveUserSessionDetails">
+      <soap:operation soapAction="retrieveUserSessionDetails" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="wns:HeadersInOut" part="credentials" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+        <soap:header message="wns:HeadersInOut" part="credentials" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="partnerAPIException">
+        <soap:fault use="literal" name="partnerAPIException"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveBalance">
+      <soap:operation soapAction="retrieveBalance" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="wns:HeadersInOut" part="credentials" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+        <soap:header message="wns:HeadersInOut" part="credentials" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="partnerAPIException">
+        <soap:fault use="literal" name="partnerAPIException"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveBalanceInfo">
+      <soap:operation soapAction="retrieveBalanceInfo" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="wns:HeadersInOut" part="credentials" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+        <soap:header message="wns:HeadersInOut" part="credentials" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="partnerAPIException">
+        <soap:fault use="literal" name="partnerAPIException"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="transfer">
+      <soap:operation soapAction="transfer" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="wns:HeadersInOut" part="credentials" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+        <soap:header message="wns:HeadersInOut" part="credentials" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="partnerAPIException">
+        <soap:fault use="literal" name="partnerAPIException"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="sendNotifications">
+      <soap:operation soapAction="sendNotifications" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="wns:HeadersInOut" part="credentials" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+        <soap:header message="wns:HeadersInOut" part="credentials" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="partnerAPIException">
+        <soap:fault use="literal" name="partnerAPIException"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="keepAlive">
+      <soap:operation soapAction="keepAlive" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="wns:HeadersInOut" part="credentials" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+        <soap:header message="wns:HeadersInOut" part="credentials" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="partnerAPIException">
+        <soap:fault use="literal" name="partnerAPIException"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="cancelTransfer">
+      <soap:operation soapAction="cancelTransfer" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="wns:HeadersInOut" part="credentials" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+        <soap:header message="wns:HeadersInOut" part="credentials" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="partnerAPIException">
+        <soap:fault use="literal" name="partnerAPIException"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PartnerAPIService">
+    <wsdl:port name="PartnerAPIService" binding="wns:PartnerAPIService">
+      <soap:address location="http://localhost/this-should-be-set-programatically"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

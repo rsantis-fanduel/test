@@ -1,0 +1,9 @@
+gradle.ext.buildServerPath = 'https://deploy.east.fdbox.net'
+
+include ':common'
+include ':btobet-client'
+include ':pp-gap-client'
+include ':pp-apa-client'
+include ':globo-client'
+
+rootProject.name = 'external-clients'

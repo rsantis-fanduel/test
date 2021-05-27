@@ -1,0 +1,236 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns2="http://www.betfair.com/servicetypes/v1/PartnerAPI/" xmlns:ns1="http://www.betfair.com/serviceapi/v1.0/PartnerAPI/" name="PartnerAPIService" targetNamespace="http://www.betfair.com/serviceapi/v1.0/PartnerAPI/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.betfair.com/servicetypes/v1/PartnerAPI/" elementFormDefault="qualified" targetNamespace="http://www.betfair.com/servicetypes/v1/PartnerAPI/" version="1.0">
+
+  <xs:element name="CancelTransferRequest" type="tns:CancelTransferRequestType"/>
+
+  <xs:element name="CancelTransferResponse" type="tns:CancelTransferResponseType"/>
+
+  <xs:element name="KeepAliveRequest" type="tns:KeepAliveRequestType"/>
+
+  <xs:element name="KeepAliveResponse" type="tns:KeepAliveResponseType"/>
+
+  <xs:element name="PartnerAPIException" type="tns:PartnerAPIExceptionType"/>
+
+  <xs:element name="RetrieveBalanceRequest" type="tns:RetrieveBalanceRequestType"/>
+
+  <xs:element name="RetrieveBalanceResponse" type="tns:RetrieveBalanceResponseType"/>
+
+  <xs:element name="RetrieveUserSessionDetailsRequest" type="tns:RetrieveUserSessionDetailsRequestType"/>
+
+  <xs:element name="RetrieveUserSessionDetailsResponse" type="tns:RetrieveUserSessionDetailsResponseType"/>
+
+  <xs:element name="TransferRequest" type="tns:TransferRequestType"/>
+
+  <xs:element name="TransferResponse" type="tns:TransferResponseType"/>
+
+  <xs:complexType name="RetrieveBalanceRequestType">
+    <xs:sequence>
+      <xs:element name="accountId" type="xs:long"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="RetrieveBalanceResponseType">
+    <xs:sequence>
+      <xs:element name="response" type="tns:StringResponseType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="StringResponseType">
+    <xs:sequence>
+      <xs:element name="string" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="PartnerAPIExceptionType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="errorCode" type="xs:string"/>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="KeepAliveRequestType">
+    <xs:sequence>
+      <xs:element name="token" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="KeepAliveResponseType">
+    <xs:sequence>
+      <xs:element name="response" type="tns:StringResponseType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="TransferRequestType">
+    <xs:sequence>
+      <xs:element name="transferRef" type="xs:string"/>
+      <xs:element minOccurs="0" name="token" type="xs:string"/>
+      <xs:element name="accountId" type="xs:long"/>
+      <xs:element name="amount" type="xs:string"/>
+      <xs:element name="currency" type="xs:string"/>
+      <xs:element name="transferDesc" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="TransferResponseType">
+    <xs:sequence>
+      <xs:element name="response" type="tns:ComplexTransferResponseType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ComplexTransferResponseType">
+    <xs:sequence>
+      <xs:element name="transferId" type="xs:long"/>
+      <xs:element minOccurs="0" name="token" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CancelTransferRequestType">
+    <xs:sequence>
+      <xs:element name="transferRef" type="xs:string"/>
+      <xs:element minOccurs="0" name="cancelTransferRef" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CancelTransferResponseType">
+    <xs:sequence>
+      <xs:element name="response" type="tns:StringResponseType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="RetrieveUserSessionDetailsRequestType">
+    <xs:sequence>
+      <xs:element name="token" type="xs:string"/>
+      <xs:element minOccurs="0" name="userIP" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="RetrieveUserSessionDetailsResponseType">
+    <xs:sequence>
+      <xs:element name="response" type="tns:UserSessionDetailsResponseType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="UserSessionDetailsResponseType">
+    <xs:sequence>
+      <xs:element name="profile" type="tns:ProfileType"/>
+      <xs:element minOccurs="0" name="balance" type="xs:string"/>
+      <xs:element name="token" type="xs:string"/>
+      <xs:element name="jurisdiction" type="tns:JurisdictionType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ProfileType">
+    <xs:sequence>
+      <xs:element name="accountId" type="xs:long"/>
+      <xs:element name="initials" type="xs:string"/>
+      <xs:element name="overrideIpBan" type="xs:boolean"/>
+      <xs:element name="currency" type="xs:string"/>
+      <xs:element name="countryCode" type="xs:string"/>
+      <xs:element name="firstName" type="xs:string"/>
+      <xs:element minOccurs="0" name="nickname" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="JurisdictionType">
+    <xs:sequence>
+      <xs:element name="name" type="xs:string"/>
+      <xs:element minOccurs="0" name="jurisdictionData" type="tns:JurisdictionDataType"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="JurisdictionDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="nationalIdentifier" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="retrieveBalance">
+    <wsdl:part element="ns2:RetrieveBalanceRequest" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="retrieveUserSessionDetailsResponse">
+    <wsdl:part element="ns2:RetrieveUserSessionDetailsResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="transferResponse">
+    <wsdl:part element="ns2:TransferResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancelTransfer">
+    <wsdl:part element="ns2:CancelTransferRequest" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="keepAliveResponse">
+    <wsdl:part element="ns2:KeepAliveResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="cancelTransferResponse">
+    <wsdl:part element="ns2:CancelTransferResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="keepAlive">
+    <wsdl:part element="ns2:KeepAliveRequest" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="transfer">
+    <wsdl:part element="ns2:TransferRequest" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="PartnerAPIExceptionFault">
+    <wsdl:part element="ns2:PartnerAPIException" name="PartnerAPIExceptionFault">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="retrieveBalanceResponse">
+    <wsdl:part element="ns2:RetrieveBalanceResponse" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="retrieveUserSessionDetails">
+    <wsdl:part element="ns2:RetrieveUserSessionDetailsRequest" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="PartnerAPIService">
+    <wsdl:operation name="retrieveBalance">
+      <wsdl:input message="ns1:retrieveBalance" name="retrieveBalance">
+    </wsdl:input>
+      <wsdl:output message="ns1:retrieveBalanceResponse" name="retrieveBalanceResponse">
+    </wsdl:output>
+      <wsdl:fault message="ns1:PartnerAPIExceptionFault" name="PartnerAPIExceptionFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="keepAlive">
+      <wsdl:input message="ns1:keepAlive" name="keepAlive">
+    </wsdl:input>
+      <wsdl:output message="ns1:keepAliveResponse" name="keepAliveResponse">
+    </wsdl:output>
+      <wsdl:fault message="ns1:PartnerAPIExceptionFault" name="PartnerAPIExceptionFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="transfer">
+      <wsdl:input message="ns1:transfer" name="transfer">
+    </wsdl:input>
+      <wsdl:output message="ns1:transferResponse" name="transferResponse">
+    </wsdl:output>
+      <wsdl:fault message="ns1:PartnerAPIExceptionFault" name="PartnerAPIExceptionFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="cancelTransfer">
+      <wsdl:input message="ns1:cancelTransfer" name="cancelTransfer">
+    </wsdl:input>
+      <wsdl:output message="ns1:cancelTransferResponse" name="cancelTransferResponse">
+    </wsdl:output>
+      <wsdl:fault message="ns1:PartnerAPIExceptionFault" name="PartnerAPIExceptionFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="retrieveUserSessionDetails">
+      <wsdl:input message="ns1:retrieveUserSessionDetails" name="retrieveUserSessionDetails">
+    </wsdl:input>
+      <wsdl:output message="ns1:retrieveUserSessionDetailsResponse" name="retrieveUserSessionDetailsResponse">
+    </wsdl:output>
+      <wsdl:fault message="ns1:PartnerAPIExceptionFault" name="PartnerAPIExceptionFault">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>
