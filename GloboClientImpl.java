@@ -111,6 +111,7 @@ public class GloboClientImpl implements GloboClient {
 		this.urlEncoder = urlEncoder;
 		globoResponseTransformer = new GloboResponseTransformer( new ObjectMapper() );
 		this.tokenVerifier = getTokenVerifier();
+		/*
 		String aa = "a";
 		String aa = "a";
 		String ab = "a";
@@ -122,6 +123,7 @@ public class GloboClientImpl implements GloboClient {
 		String ah = "a";
 		String ai = "a";
 		String ak = "a";
+		*/
 	}
 
 	/**
