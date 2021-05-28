@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -45,6 +46,7 @@ import org.slf4j.LoggerFactory;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import com.fanduel.api.exception.APICodedException;
+import com.fanduel.external.client.common.OICIssuer;
 import com.fanduel.external.client.common.TokenVerifier;
 import com.fanduel.external.client.globo.GloboClient;
 import com.fanduel.external.client.globo.transfer.GloboAuthenticateResponse;
@@ -78,33 +80,40 @@ public class GloboClientImpl implements GloboClient {
 
 	private final String clientId;
 	private final String clientSecret;
-	private final String issuer;
-	private final String tokenEndpoint;
-	private final String authorizationEndpoint;
-	private final String apiEndpoint;
-	private final String logoutEndpoint;
-	private final String certsEndpoint;
-	private final String redirectUrl;
+	private final OICIssuer issuer;
+	private final URI  tokenEndpoint;
+	private final URI authorizationEndpoint;
+	private final URI certsEndpoint;
+	private final URL  redirectUrl;
 	private final String scope;
-	private final String requiredClaims[];
+	private final String[] requiredClaims;
 	private final URLEncoder urlEncoder;
 	private final GloboResponseTransformer globoResponseTransformer;
 	private final TokenVerifier tokenVerifier;
 
 	public GloboClientImpl( final String clientId, final String clientSecret, final String issuer,
 			final String redirectUrl, String scope, final URLEncoder urlEncoder ) {
+
 		this.timers = Stream.of( GLOBO_AUTHENTICATE, GLOBO_GET_TOKEN, GLOBO_REFRESH )
 				.collect( toMap( identity(), name -> METRICS.timer(
 						MetricRegistry.name( GloboClientImpl.class, name, "timer" ) ) ) );
 		this.clientId = clientId;
 		this.clientSecret = clientSecret;
-		this.issuer = issuer;
-		this.tokenEndpoint = issuer + TOKEN_PATH;
-		this.authorizationEndpoint = issuer + AUTHORIZATION_PATH;
-		this.apiEndpoint = issuer + USERINFO_PATH;
-		this.logoutEndpoint = issuer + LOGOUT_PATH;
-		this.certsEndpoint = issuer + CERT_PATH;
-		this.redirectUrl = redirectUrl;
+		try {
+			this.issuer = new OICIssuer( issuer );
+		} catch ( MalformedURLException e ) {
+			throw new APICodedException( GLOBO_URI_PARSING_ERROR,"invalid issuer "+issuer,e );
+		}
+		try {
+			this.redirectUrl = new URL(redirectUrl);
+		} catch ( MalformedURLException e ) {
+			throw new APICodedException( GLOBO_URI_PARSING_ERROR,"invalid redirectUrl "+redirectUrl,e );
+		}
+		this.tokenEndpoint = this.issuer.token_endpoint();
+		this.authorizationEndpoint = this.issuer.authorization_endpoint();
+
+		this.certsEndpoint = this.issuer.jwks_uri();
+
 		this.scope = scope;
 		// TODO: this must match the scope, for now we list the claims being used
 		this.requiredClaims = new String[] { "globo_id", "name", "email " };
@@ -123,9 +132,9 @@ public class GloboClientImpl implements GloboClient {
 	public GloboAuthenticateResponse authenticate( final String state ) {
 		final GloboAuthenticateResponse authenticateResponse = new GloboAuthenticateResponse();
 		try ( final Timer.Context ignored = timers.get( GLOBO_AUTHENTICATE ).time() ) {
-			URIBuilder uri = new URIBuilder( authorizationEndpoint );
+			URIBuilder uri = new URIBuilder( authorizationEndpoint.toString() );
 			uri.addParameter( CLIENT_ID_PARAMETER_NAME, clientId )
-					.addParameter( REDIRECT_URI_PARAMETER_NAME, redirectUrl )
+					.addParameter( REDIRECT_URI_PARAMETER_NAME, redirectUrl.toString() )
 					.addParameter( "scope", scope )
 					.addParameter( "response_type", "code" )
 					.addParameter( "state", state );
@@ -143,7 +152,7 @@ public class GloboClientImpl implements GloboClient {
 	public GloboAuthoriseResponse getToken( final String code ) {
 		final List<BasicNameValuePair> formValues = ImmutableList.of(
 				new BasicNameValuePair( CLIENT_ID_PARAMETER_NAME, clientId ),
-				new BasicNameValuePair( REDIRECT_URI_PARAMETER_NAME, redirectUrl ),
+				new BasicNameValuePair( REDIRECT_URI_PARAMETER_NAME, redirectUrl.toString() ),
 				new BasicNameValuePair( CLIENT_SECRET_PARAMETER_NAME, clientSecret ),
 				new BasicNameValuePair( CODE_PARAMETER_NAME, code ),
 				new BasicNameValuePair( GRANT_TYPE_PARAMETER_NAME, "authorization_code" ) );
@@ -177,7 +186,7 @@ public class GloboClientImpl implements GloboClient {
 		final List<BasicNameValuePair> requestBody = ImmutableList.of(
 				new BasicNameValuePair( CLIENT_ID_PARAMETER_NAME, this.clientId ),
 				new BasicNameValuePair( CLIENT_SECRET_PARAMETER_NAME, this.clientSecret ),
-				new BasicNameValuePair( REDIRECT_URI_PARAMETER_NAME, this.redirectUrl ),
+				new BasicNameValuePair( REDIRECT_URI_PARAMETER_NAME, this.redirectUrl.toString() ),
 				new BasicNameValuePair( CODE_PARAMETER_NAME, code ),
 				new BasicNameValuePair( GRANT_TYPE_PARAMETER_NAME, "authorization_code" ) );
 
@@ -335,7 +344,7 @@ public class GloboClientImpl implements GloboClient {
 
 	private TokenVerifier getTokenVerifier() {
 		try {
-			return new TokenVerifier( certsEndpoint, JWSAlgorithm.RS256, issuer,
+			return new TokenVerifier( certsEndpoint.toString(), JWSAlgorithm.RS256, issuer.toString(),
 					new HashSet<>( Arrays.asList( requiredClaims ) ) );
 		} catch ( MalformedURLException e ) {
 			LOGGER.error( "Failed to create Token " + e.getMessage() );

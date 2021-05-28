@@ -58,7 +58,7 @@ public class TokenVerifier {
 		} catch ( BadJOSEException e ) {
 			return false;
 		} catch ( ParseException | JOSEException e ) {
-			throw new APICodedException( JWT_SIGNATURE_VERIFICATION_ERROR );
+			throw new APICodedException( JWT_SIGNATURE_VERIFICATION_ERROR ,"verifyTokenSignature",e);
 		}
 	}
 }

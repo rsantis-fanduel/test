@@ -18,12 +18,12 @@ import com.fanduel.external.client.globo.impl.URLEncoder;
 import com.fanduel.runtime.config.Config;
 
 public class GloboClientModule extends ResilientAwareModule {
-	public final static String GLOBO_AUTHENTICATE = "authenticate";
-	public final static String GLOBO_GET_TOKEN = "getToken";
-	public final static String GLOBO_LOGOUT = "logout";
-	public final static String GLOBO_AUTHORISE = "authorise";
-	public final static String GLOBO_REFRESH = "refresh";
-	public final static String GLOBO_VERIFY_TOKEN = "verifyToken";
+	public static final String GLOBO_AUTHENTICATE = "authenticate";
+	public static final String GLOBO_GET_TOKEN = "getToken";
+	public static final String GLOBO_LOGOUT = "logout";
+	public static final String GLOBO_AUTHORISE = "authorise";
+	public static final String GLOBO_REFRESH = "refresh";
+	public static final String GLOBO_VERIFY_TOKEN = "verifyToken";
 
 	private static final String CLIENT_SECRET = "ClientSecret";
 	private static final String SCOPE = "Scope";
